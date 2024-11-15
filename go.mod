@@ -1,4 +1,4 @@
-module clevergo.tech/dnspodcn
+module github.com/mmhk/dnspodcn
 
 go 1.13
 
