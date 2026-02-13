@@ -12,16 +12,16 @@ import (
 
 func TestNewClient(t *testing.T) {
 	cases := []struct {
-		id, token string
+		secretId, secretKey string
 	}{
 		{"foo", "bar"},
 		{"fizz", "buzz"},
 	}
 
 	for _, test := range cases {
-		c := NewClient(test.id, test.token)
-		assert.Equal(t, test.id, c.AppID)
-		assert.Equal(t, test.token, c.AppToken)
+		c := NewClient(test.secretId, test.secretKey)
+		assert.Equal(t, test.secretId, c.SecretId)
+		assert.Equal(t, test.secretKey, c.SecretKey)
 		assert.Equal(t, apiBaseURL, c.BaseURL)
 	}
 }

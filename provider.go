@@ -28,14 +28,14 @@ type Provider struct {
 // GetRecords returns all the records in the DNS zone.
 func (p *Provider) GetRecords(ctx context.Context, zone string) ([]libdns.Record, error) {
 	domain := formatDomain(zone)
-	req := NewQueryRecordsRequest(domain)
-	resp, err := p.Client.QueryRecords(ctx, req)
+	req := NewDescribeRecordListRequest(domain)
+	resp, err := p.Client.DescribeRecordList(ctx, req)
 	if err != nil {
 		return nil, err
 	}
 
-	result := make([]libdns.Record, 0, len(resp.Records))
-	for _, rec := range resp.Records {
+	result := make([]libdns.Record, 0, len(resp.RecordList))
+	for _, rec := range resp.RecordList {
 		result = append(result, rec.libdnsRecord())
 	}
 
@@ -57,7 +57,8 @@ func (p *Provider) AppendRecords(ctx context.Context, zone string, recs []libdns
 		if err != nil {
 			return nil, err
 		}
-		result = append(result, resp.Record.libdnsRecord())
+		rec.ID = strconv.Itoa(resp.RecordId)
+		result = append(result, rec)
 	}
 	return result, nil
 }
@@ -74,14 +75,14 @@ func (p *Provider) SetRecords(ctx context.Context, zone string, recs []libdns.Re
 		subdomain := formatSubdomain(domain, rec.Name)
 		ttl := formatTTL(rec.TTL)
 		if rec.ID == "" {
-			queryReq := NewQueryRecordsRequest(domain)
+			queryReq := NewDescribeRecordListRequest(domain)
 			queryReq.Subdomain = subdomain
 			queryReq.RecordType = rec.Type
-			queryResp, err := p.Client.QueryRecords(ctx, queryReq)
+			queryResp, err := p.Client.DescribeRecordList(ctx, queryReq)
 			if err != nil {
 				return nil, err
 			}
-			if len(queryResp.Records) == 0 {
+			if len(queryResp.RecordList) == 0 {
 				// record doesn't exist, create it.
 				createReq := NewCreateRecordRequest(domain, subdomain, rec.Type, rec.Value)
 				createReq.TTL = ttl
@@ -89,47 +90,48 @@ func (p *Provider) SetRecords(ctx context.Context, zone string, recs []libdns.Re
 				if err != nil {
 					return nil, err
 				}
-				rec.ID = createResp.Record.ID
+				rec.ID = strconv.Itoa(createResp.RecordId)
 				results = append(results, rec)
 				continue
 			}
-			if len(queryResp.Records) > 1 {
+			if len(queryResp.RecordList) > 1 {
 				return nil, fmt.Errorf("unexpectedly found more than 1 record for %v", rec)
 			}
-			rec.ID = queryResp.Records[0].ID
+			rec.ID = strconv.Itoa(queryResp.RecordList[0].RecordId)
 		}
 		// record exists, update it.
-		updateReq := NewUpdateRecordRequest(domain, rec.ID, rec.Type, rec.Value)
-		updateReq.Subdomain = subdomain
+		recordId, _ := strconv.Atoi(rec.ID)
+		updateReq := NewUpdateRecordRequest(domain, recordId, rec.Type, rec.Value)
+		updateReq.SubDomain = subdomain
 		updateReq.TTL = ttl
 		updateResp, err := p.Client.UpdateRecord(ctx, updateReq)
 		if err != nil {
 			return nil, err
 		}
-		rec.ID = strconv.Itoa(updateResp.Record.ID)
+		rec.ID = strconv.Itoa(updateResp.RecordId)
 		results = append(results, rec)
 	}
 	return results, nil
 }
 
 func (p *Provider) findRecordID(ctx context.Context, domain string, rec libdns.Record) (string, error) {
-	queryReq := NewQueryRecordsRequest(domain)
+	queryReq := NewDescribeRecordListRequest(domain)
 	queryReq.Subdomain = formatSubdomain(domain, rec.Name)
 	queryReq.RecordType = rec.Type
-	queryResp, err := p.Client.QueryRecords(ctx, queryReq)
+	queryResp, err := p.Client.DescribeRecordList(ctx, queryReq)
 	if err != nil {
 		return "", err
 	}
 
-	if len(queryResp.Records) == 0 {
+	if len(queryResp.RecordList) == 0 {
 		return "", fmt.Errorf("no such record %v", rec)
 	}
 
-	if len(queryResp.Records) > 1 {
+	if len(queryResp.RecordList) > 1 {
 		return "", fmt.Errorf("unexpectedly found more than 1 record for %v", rec)
 	}
 
-	return queryResp.Records[0].ID, nil
+	return strconv.Itoa(queryResp.RecordList[0].RecordId), nil
 }
 
 // DeleteRecords deletes the given records from the zone if they exist.
@@ -145,7 +147,8 @@ func (p *Provider) DeleteRecords(ctx context.Context, zone string, recs []libdns
 			}
 			rec.ID = id
 		}
-		req := NewDeleteRecordRequest(domain, rec.ID)
+		recordId, _ := strconv.Atoi(rec.ID)
+		req := NewDeleteRecordRequest(domain, recordId)
 		_, err := p.Client.DeleteRecord(ctx, req)
 		if err != nil {
 			return nil, err

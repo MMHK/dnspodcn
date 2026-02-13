@@ -40,10 +40,10 @@ func TestFormatSubdomain(t *testing.T) {
 func TestFormatTTL(t *testing.T) {
 	cases := []struct {
 		ttl      time.Duration
-		expected string
+		expected int
 	}{
-		{60 * time.Second, "60"},
-		{time.Hour, "3600"},
+		{60 * time.Second, 60},
+		{time.Hour, 3600},
 	}
 	for _, test := range cases {
 		assert.Equal(t, test.expected, formatTTL(test.ttl))

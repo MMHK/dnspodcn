@@ -57,6 +57,12 @@ DNSPod API 分為以下幾個類別：
 | Signature | String | 請求簽名 |
 | SignatureMethod | String | 簽名方法：HmacSHA256 或 TC3-HMAC-SHA256 |
 
+## API Explorer
+
+騰訊雲 API 平台 是綜合 API 文檔、錯誤碼、API Explorer 及 SDK 等資源的統一查詢平台，方便您從同一入口查詢及使用騰訊雲提供的所有 API 服務。
+
+API Explorer 提供了在線調用、簽名驗證、SDK 代碼生成和快速檢索接口等能力。您可查看每次調用的請求內容和返回結果以及自動生成 SDK 調用示例。
+
 ## 頻率限制
 
 不同接口有不同的頻率限制，具體請參考各接口文檔。一般限制維度為 `API + 接入地域 + 子賬號`。

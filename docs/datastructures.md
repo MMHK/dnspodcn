@@ -106,14 +106,14 @@
 | Line | String | 線路 |
 | LineId | String | 線路 ID |
 | Type | String | 記錄類型 |
-| Weight | Integer | 權重 |
+| Weight | Integer | 權重（可能為 null） |
 | MonitorStatus | String | 監控狀態 |
 | Remark | String | 備註 |
 | TTL | Integer | TTL 值 |
 | MX | Integer | MX 優先級 |
 | DefaultNS | Boolean | 是否為默認 NS 記錄 |
 | GroupId | Integer | 分組 ID |
-| Enabled | Integer | 是否啟用 |
+| Enabled | Integer | 是否啟用（可能為 null） |
 
 ---
 

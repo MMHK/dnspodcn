@@ -5,7 +5,6 @@
 package dnspodcn
 
 import (
-	"strconv"
 	"strings"
 	"time"
 )
@@ -24,7 +23,7 @@ func formatSubdomain(domain, subdomain string) string {
 	return formatDomain(strings.TrimSuffix(formatDomain(subdomain), domain))
 }
 
-// formatTTL returns a string that represents the seconds of ttl.
-func formatTTL(ttl time.Duration) string {
-	return strconv.Itoa(int(ttl.Seconds()))
+// formatTTL returns an int that represents the seconds of ttl.
+func formatTTL(ttl time.Duration) int {
+	return int(ttl.Seconds())
 }
