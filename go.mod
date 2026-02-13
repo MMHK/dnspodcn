@@ -1,4 +1,4 @@
-module dnspodcn
+module github.com/mmhk/dnspodcn
 
 go 1.13
 

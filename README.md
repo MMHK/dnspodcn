@@ -1,22 +1,22 @@
 # DNSPod.cn Go SDK
 
-[![Build Status](https://img.shields.io/travis/com/MMHK/dnspodcn?style=for-the-badge)](https://travis-ci.com/MMHK/dnspodcn)
-[![Go.Dev reference](https://img.shields.io/badge/go.dev-reference-blue?logo=go&logoColor=white&style=for-the-badge)](https://pkg.go.dev/github.com/MMHK/dnspodcn)
-[![Go Report Card](https://goreportcard.com/badge/github.com/MMHK/dnspodcn?style=for-the-badge)](https://goreportcard.com/report/github.com/MMHK/dnspodcn)
-[![Release](https://img.shields.io/github/release/MMHK/dnspodcn.svg?style=for-the-badge)](https://github.com/MMHK/dnspodcn/releases)
+[![Build Status](https://img.shields.io/travis/com/mmhk/dnspodcn?style=for-the-badge)](https://travis-ci.com/mmhk/dnspodcn)
+[![Go.Dev reference](https://img.shields.io/badge/go.dev-reference-blue?logo=go&logoColor=white&style=for-the-badge)](https://pkg.go.dev/github.com/mmhk/dnspodcn)
+[![Go Report Card](https://goreportcard.com/badge/github.com/mmhk/dnspodcn?style=for-the-badge)](https://goreportcard.com/report/github.com/mmhk/dnspodcn)
+[![Release](https://img.shields.io/github/release/mmhk/dnspodcn.svg?style=for-the-badge)](https://github.com/mmhk/dnspodcn/releases)
 
 `dnspodcn` 是 [DNSPod](https://cloud.tencent.com/document/api/1427/56194) API 3.0 的 Go SDK。其中 `Provider` 实现了 [libdns](https://github.com/libdns/libdns/) 接口。
 
 ## 安裝
 
 ```shell
-go get -u github.com/MMHK/dnspodcn
+go get -u github.com/mmhk/dnspodcn
 ```
 
 ## 使用
 
 ```go
-import "github.com/MMHK/dnspodcn"
+import "github.com/mmhk/dnspodcn"
 
 client := dnspodcn.NewClient("SECRET_ID", "SECRET_KEY")
 ```
@@ -77,7 +77,7 @@ client.Region = "ap-guangzhou" // 可選：ap-guangzhou, ap-shanghai, ap-beijing
 
 ## 貢獻
 
-如果你有其他接口需求或發現問題，可以通過 [Issue](https://github.com/MMHK/dnspodcn/issues/new) 反饋，也歡迎提交 Pull Request。
+如果你有其他接口需求或發現問題，可以通過 [Issue](https://github.com/mmhk/dnspodcn/issues/new) 反饋，也歡迎提交 Pull Request。
 
 ## 許可證
 
